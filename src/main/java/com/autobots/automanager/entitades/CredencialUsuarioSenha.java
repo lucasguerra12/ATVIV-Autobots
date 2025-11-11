@@ -1,7 +1,7 @@
 package com.autobots.automanager.entitades;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
