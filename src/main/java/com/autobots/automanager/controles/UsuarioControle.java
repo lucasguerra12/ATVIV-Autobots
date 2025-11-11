@@ -18,8 +18,8 @@ import com.autobots.automanager.entitades.Usuario;
 import com.autobots.automanager.modelo.AdicionadorLinkUsuario;
 import com.autobots.automanager.repositorios.RepositorioUsuario;
 import org.springframework.web.bind.annotation.DeleteMapping; 
-import com.autobots.automanager.entitades.Empresa; 
-import com.autobots.automanager.repositorios.RepositorioEmpresa;
+
+import com.autobots.automanager.servicos.UsuarioServico; 
 
 @RestController
 @RequestMapping("/usuario")
@@ -27,13 +27,12 @@ public class UsuarioControle {
 
     @Autowired
     private RepositorioUsuario repositorio;
-
     @Autowired
-    private RepositorioEmpresa repositorioEmpresa;
+    private UsuarioServico servico; 
 
     @Autowired
     private AdicionadorLinkUsuario adicionadorLink; 
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obterUsuario(@PathVariable long id) {
         Optional<Usuario> usuarioOpcional = repositorio.findById(id);
@@ -90,13 +89,7 @@ public class UsuarioControle {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             Usuario usuario = usuarioOpcional.get();
-            List<Empresa> empresas = repositorioEmpresa.findAll();
-            
-            for (Empresa empresa : empresas) {
-                empresa.getUsuarios().remove(usuario);
-            }
-
-            repositorioEmpresa.saveAll(empresas);
+            servico.excluirUsuario(usuario); 
             
             return new ResponseEntity<>(HttpStatus.OK);
         }
