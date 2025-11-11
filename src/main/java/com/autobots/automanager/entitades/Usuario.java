@@ -22,7 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false, exclude = { "mercadorias", "vendas", "veiculos" })
 @Entity
 public class Usuario extends RepresentationModel<Usuario> {
 	@Id
