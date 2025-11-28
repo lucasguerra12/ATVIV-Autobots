@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import com.autobots.automanager.enumeracoes.TipoVeiculo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -27,14 +28,20 @@ public class Veiculo extends RepresentationModel<Veiculo> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Column(nullable = false)
 	private TipoVeiculo tipo;
+
 	@Column(nullable = false)
 	private String modelo;
+
 	@Column(nullable = false)
 	private String placa;
+
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@JsonIgnoreProperties("veiculos")
 	private Usuario proprietario;
+
 	@OneToMany(mappedBy = "veiculo", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Venda> vendas = new HashSet<>();
 }
