@@ -35,14 +35,27 @@ public class Seguranca {
 			.cors(cors -> cors.disable())
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth
+				// Login público
 				.requestMatchers(HttpMethod.POST, "/login").permitAll()
 				
+				// --- VENDEDOR (Tabela 1: CRUD em Vendas, Serviços, Mercadorias) ---
+				.requestMatchers("/venda/**", "/servico/**", "/mercadoria/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE", "VENDEDOR")
+				
+				// --- GESTÃO DE USUÁRIOS (Tabela 1) ---
+				// Criar/Editar: Admin, Gerente e Vendedor (Vendedor pode criar Clientes)
+				.requestMatchers(HttpMethod.POST, "/usuario/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE", "VENDEDOR")
+				.requestMatchers(HttpMethod.PUT, "/usuario/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE", "VENDEDOR")
+				
+				// Excluir Usuários: Admin e Gerente (Gerente pode excluir Vendedores/Clientes)
+				.requestMatchers(HttpMethod.DELETE, "/usuario/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE")
+
+				// --- EMPRESA ---
+				.requestMatchers("/empresa/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE")
+
+				// --- GLOBAL DELETE (Admin) ---
 				.requestMatchers(HttpMethod.DELETE, "/**").hasAuthority("ADMINISTRADOR") 
 				
-				.requestMatchers(HttpMethod.POST, "/empresa/**", "/servico/**", "/mercadoria/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE")
-				.requestMatchers(HttpMethod.PUT, "/empresa/**", "/servico/**", "/mercadoria/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE")
-
-				.requestMatchers(HttpMethod.POST, "/venda/**").hasAnyAuthority("ADMINISTRADOR", "GERENTE", "VENDEDOR")
+				// Resto requer autenticação (incluindo GET para Clientes)
 				.anyRequest().authenticated()
 			)
 			.addFilter(new Autenticador(authenticationManager, provedorJwt))
