@@ -16,7 +16,7 @@ import jakarta.persistence.OneToMany;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties; // <--- IMPORT NOVO
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,11 +36,11 @@ public class Venda extends RepresentationModel<Venda> {
 	private String identificacao;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	@JsonIgnoreProperties("vendas") 
+	@JsonIgnoreProperties({ "vendas", "veiculos" }) 
 	private Usuario cliente;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	@JsonIgnoreProperties("vendas")
+	@JsonIgnoreProperties({ "vendas", "veiculos" })
 	private Usuario funcionario;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
@@ -49,8 +49,7 @@ public class Venda extends RepresentationModel<Venda> {
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Servico> servicos = new HashSet<>();
 	
-	// Podes precisar disto aqui também se Veiculo tiver link para Venda ou Proprietário
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	@JsonIgnoreProperties("proprietario") 
+	@JsonIgnoreProperties({ "proprietario", "vendas" }) 
 	private Veiculo veiculo;
 }

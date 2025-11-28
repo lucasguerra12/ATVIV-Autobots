@@ -39,7 +39,7 @@ public class Veiculo extends RepresentationModel<Veiculo> {
 	private String placa;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	@JsonIgnoreProperties("veiculos")
+	@JsonIgnoreProperties({ "veiculos", "vendas" })
 	private Usuario proprietario;
 
 	@OneToMany(mappedBy = "veiculo", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
