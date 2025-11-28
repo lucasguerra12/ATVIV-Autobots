@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
-import com.autobots.automanager.enumeracoes.PerfilUsuario;
+import com.autobots.automanager.enumeracoes.Perfil;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -33,7 +33,7 @@ public class Usuario extends RepresentationModel<Usuario> {
 	@Column
 	private String nomeSocial;
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<PerfilUsuario> perfis = new HashSet<>();
+	private Set<Perfil> perfis = new HashSet<>();
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Telefone> telefones = new HashSet<>();
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
