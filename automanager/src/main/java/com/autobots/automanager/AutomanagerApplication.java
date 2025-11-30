@@ -46,20 +46,37 @@ public class AutomanagerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // Criação de Usuário ADMIN padrão
         if (repositorioUsuario.findByCredencialNomeUsuario("admin") == null) {
             Usuario admin = new Usuario();
-            admin.setNome("Administrador Master");
+            admin.setNome("Administrador do Sistema");
             admin.setNomeSocial("Admin");
             admin.setCadastro(new Date());
             admin.getPerfis().add(Perfil.ROLE_ADMIN);
 
             Credencial cred = new Credencial();
             cred.setNomeUsuario("admin");
-            cred.setSenha(passwordEncoder.encode("admin123")); 
+            cred.setSenha(passwordEncoder.encode("admin123"));
             
             admin.setCredencial(cred);
             repositorioUsuario.save(admin);
-            System.out.println("Usuário ADMIN criado.");
+            System.out.println("Usuário ADMIN (admin/admin123) criado com sucesso.");
+        }
+        
+        if (repositorioUsuario.findByCredencialNomeUsuario("vendedor") == null) {
+            Usuario vend = new Usuario();
+            vend.setNome("Vendedor Padrão");
+            vend.setNomeSocial("Vendedor 01");
+            vend.setCadastro(new Date());
+            vend.getPerfis().add(Perfil.ROLE_VENDEDOR);
+
+            Credencial cred = new Credencial();
+            cred.setNomeUsuario("vendedor");
+            cred.setSenha(passwordEncoder.encode("vendedor123"));
+            
+            vend.setCredencial(cred);
+            repositorioUsuario.save(vend);
+            System.out.println("Usuário VENDEDOR (vendedor/vendedor123) criado com sucesso.");
         }
     }
 }
